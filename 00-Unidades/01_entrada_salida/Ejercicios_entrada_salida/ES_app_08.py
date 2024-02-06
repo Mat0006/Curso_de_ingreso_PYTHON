@@ -40,7 +40,14 @@ class App(customtkinter.CTk):
 
 
     def btn_mostrar_on_click(self):
-        pass
+        operador_a_texto = self.txt_operador_a.get()
+        operador_b_texto = self.txt_operador_b.get()
+        operador_a_nunero = int(operador_a_texto)
+        operador_b_numero = int(operador_b_texto)
+        resto_ab = operador_a_nunero % operador_b_numero
+        resul_ab = "el resto es: {0}".format(resto_ab)
+        alert(title = "resto", message = resul_ab)
+
         
         
     
