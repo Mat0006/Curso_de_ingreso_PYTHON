@@ -52,13 +52,41 @@ class App(customtkinter.CTk):
         self.btn_total_iva.grid(row=5, pady=10, columnspan=2, sticky="nsew")
 
     def btn_total_on_click(self):
-        pass
+        producto1_texto = self.txt_importe_1.get()
+        producto2_texto = self.txt_importe_2.get()
+        producto3_texto = self.txt_importe_3.get()
+        producto1_num = int(producto1_texto)
+        producto2_num = int(producto2_texto)
+        producto3_num = int(producto3_texto)
+        suma_productos = producto1_num + producto2_num + producto3_num
+        total_suma = "La suma total del precio de los productos es: {0}".format(suma_productos)
+        alert(title = "total", message = total_suma)
+
 
     def btn_promedio_on_click(self):
-        pass
+        producto1_texto = self.txt_importe_1.get()
+        producto2_texto = self.txt_importe_2.get()
+        producto3_texto = self.txt_importe_3.get()
+        producto1_num = float(producto1_texto)
+        producto2_num = float(producto2_texto)
+        producto3_num = float(producto3_texto)
+        suma_productos = producto1_num + producto2_num + producto3_num
+        prom_productos = suma_productos / 3
+        mensa_promedio = "El promedio de los productos es : {0}".format(prom_productos)
+        alert(title = "promedio", message = mensa_promedio)
+
 
     def btn_total_iva_on_click(self):
-        pass      
+        producto1_texto = self.txt_importe_1.get()
+        producto2_texto = self.txt_importe_2.get()
+        producto3_texto = self.txt_importe_3.get()
+        producto1_num = float(producto1_texto)
+        producto2_num = float(producto2_texto)
+        producto3_num = float(producto3_texto)
+        suma_productos = (producto1_num + producto2_num + producto3_num)
+        p_final_iva = (suma_productos * 0.21) + suma_productos
+        mensaje = "La suma del precio de los productos más el IVA es: {0}".format(p_final_iva)
+        alert(title = "precio final más iva", message = mensaje)        
     
 if __name__ == "__main__":
     app = App()
