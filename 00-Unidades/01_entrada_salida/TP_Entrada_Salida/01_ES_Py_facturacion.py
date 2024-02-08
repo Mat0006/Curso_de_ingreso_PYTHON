@@ -86,7 +86,7 @@ class App(customtkinter.CTk):
         suma_productos = (producto1_num + producto2_num + producto3_num)
         p_final_iva = (suma_productos * 0.21) + suma_productos
         mensaje = "La suma del precio de los productos más el IVA es: {0}".format(p_final_iva)
-        alert(title = "precio final más iva", message = mensaje)        
+        alert(title = "precio final más iva.", message = mensaje)        
     
 if __name__ == "__main__":
     app = App()
