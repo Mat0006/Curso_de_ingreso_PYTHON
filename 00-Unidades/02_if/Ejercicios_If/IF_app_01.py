@@ -33,7 +33,11 @@ class App(customtkinter.CTk):
 
 
     def btn_mostrar_on_click(self):
-        pass
+        edad_texto = self.txt_edad.get()
+        edad_num = int(edad_texto)
+        mensaje = "Usted tiene {0} años".format(edad_num)
+        if edad_num == 18:
+            alert(title = "edad", message = mensaje)
 
          
 if __name__ == "__main__":
