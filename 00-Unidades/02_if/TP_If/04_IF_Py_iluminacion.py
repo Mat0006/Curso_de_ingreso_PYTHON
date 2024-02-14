@@ -43,7 +43,44 @@ class App(customtkinter.CTk):
 
 
     def btn_calcular_on_click(self):
-        pass
+        marca = self.combobox_marca.get()
+        cantidad_text = self.combobox_cantidad.get()
+        cantidad = float(cantidad_text)
+        precio = cantidad * 800
+
+        if cantidad >= 6:
+            sub_tottal = precio *0.5
+            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
+        elif cantidad == 5 and (marca == "ArgentinaLuz"):
+            sub_tottal = precio - (precio * 0.4)
+            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
+        #elif cantidad == 5 and marca == "JeLuz" or "HazIluminacion" or "FelipeLamparas" or "Osram":
+        #Así lo tenía y le puse el parentesis para corregir
+        elif cantidad == 5 and (marca == "JeLuz" or "HazIluminacion" or "FelipeLamparas" or "Osram"):
+            sub_tottal = precio - (precio * 0.3)
+            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
+        elif cantidad == 4 and (marca == "ArgentinaLuz" or "FelipeLamparas"):
+            sub_tottal = precio - (precio * 0.25) #Esto está mal, a partir de acá se aplica el 30% a todo
+            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
+        elif cantidad == 4 and (marca == "JeLuz" or "HazIluminacion" or "Osram"):
+            sub_tottal = precio - (precio * 0.2)
+            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
+        elif cantidad == 3 and (marca == "ArgentinaLuz"):
+            sub_tottal = precio - (precio * 0.15)
+            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
+        elif cantidad == 3 and (marca == "FelipeLamparas"):
+            sub_tottal = precio - (precio * 0.1)
+            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
+        elif cantidad == 3 and (marca == "JeLuz" or "HazIluminacion" or "Osram"):
+            sub_tottal = precio - (precio * 0.05)
+            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
+        
+        if sub_tottal >= 4000:
+            total = sub_tottal - (sub_tottal * 0.05)
+            alert(title = "Total", message = "El precio es {0}".format(total))
+    
+
+
         
     
 if __name__ == "__main__":
