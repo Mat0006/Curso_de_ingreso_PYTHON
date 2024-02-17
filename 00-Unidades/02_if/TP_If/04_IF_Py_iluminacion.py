@@ -45,38 +45,37 @@ class App(customtkinter.CTk):
     def btn_calcular_on_click(self):
         marca = self.combobox_marca.get()
         cantidad_text = self.combobox_cantidad.get()
-        cantidad = float(cantidad_text)
+        cantidad = int(cantidad_text)
         precio = cantidad * 800
-
+        mensaje = f"el precio sin descuento es :{precio} "
+            #se resuelve primero de derecha a izquierda
         if cantidad >= 6:
-            sub_tottal = precio *0.5
-            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
-        elif cantidad == 5 and (marca == "ArgentinaLuz"):
-            sub_tottal = precio - (precio * 0.4)
-            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
-        #elif cantidad == 5 and marca == "JeLuz" or "HazIluminacion" or "FelipeLamparas" or "Osram":
-        #Así lo tenía y le puse el parentesis para corregir
-        elif cantidad == 5 and (marca == "JeLuz" or "HazIluminacion" or "FelipeLamparas" or "Osram"):
-            sub_tottal = precio - (precio * 0.3)
-            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
-        elif cantidad == 4 and (marca == "ArgentinaLuz" or "FelipeLamparas"):
-            sub_tottal = precio - (precio * 0.25) #Esto está mal, a partir de acá se aplica el 30% a todo
-            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
-        elif cantidad == 4 and (marca == "JeLuz" or "HazIluminacion" or "Osram"):
-            sub_tottal = precio - (precio * 0.2)
-            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
-        elif cantidad == 3 and (marca == "ArgentinaLuz"):
-            sub_tottal = precio - (precio * 0.15)
-            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
+            descuento = 0.5
+        elif cantidad == 5:
+            descuento = 0.3
+            if(marca == "ArgentinaLuz"):
+                descuento = 0.4
+        elif cantidad == 4:
+            descuento = 0.2
+            if(marca == "ArgentinaLuz" or "FelipeLamparas"):
+                descuento = 0.25
+        elif cantidad == 3:
+            if(marca == "ArgentinaLuz"):
+             descuento = 0.3
         elif cantidad == 3 and (marca == "FelipeLamparas"):
-            sub_tottal = precio - (precio * 0.1)
-            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
-        elif cantidad == 3 and (marca == "JeLuz" or "HazIluminacion" or "Osram"):
-            sub_tottal = precio - (precio * 0.05)
-            alert(title = "Total", message = "El precio es {0}".format(sub_tottal))
-        
-        if sub_tottal >= 4000:
-            total = sub_tottal - (sub_tottal * 0.05)
+            descuento = 0.1
+        elif cantidad == 3:
+            descuento = 0.05
+        else:
+            descuento = 1
+
+        desc_realizado = precio * descuento
+        sub_total = precio - desc_realizado
+        mensaje = f"El precio es {sub_total}"
+        alert("Cantidad", mensaje)
+
+        if sub_total > 4000:
+            total = sub_total - (sub_total * 0.05)
             alert(title = "Total", message = "El precio es {0}".format(total))
     
 

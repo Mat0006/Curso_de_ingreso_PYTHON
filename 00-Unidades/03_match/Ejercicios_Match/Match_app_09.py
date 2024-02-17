@@ -57,7 +57,39 @@ class App(customtkinter.CTk):
         
     
     def btn_informar_on_click(self):
-        pass
+        estaciones = self.combobox_estaciones.get()
+        destino = self.combobox_destino.get()
+        match (estaciones):
+            case "Invierno":
+                match(destino):
+                    case "Bariloche":
+                        precio_nuevo = 1.20
+                    case "Mar del plata":
+                        precio_nuevo = 0.80
+                    case _:
+                        precio_nuevo = 0.90
+            case "Verano":
+                match(destino):
+                    case "Bariloche":
+                        precio_nuevo = 0.80
+                    case "Mar del plata":
+                        precio_nuevo = 1.20
+                    case _:
+                        precio_nuevo = 1.10
+            case "Primavera"|"Otoño":
+                match(destino):
+                    case "Bariloche"|"Cataratas"|"Mar del plata":
+                        precio_nuevo = 1.10
+                    case _:
+                        precio_nuevo = 1
+
+        precio_final = 1500 * precio_nuevo
+        mensaje = f"el nuevo precio es {precio_final}"
+        alert("CARO", mensaje)
+
+
+
+                
             
     
 if __name__ == "__main__":
