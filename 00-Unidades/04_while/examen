@@ -1,0 +1,146 @@
+import tkinter
+from tkinter.messagebox import showinfo as alert
+from tkinter.messagebox import askyesno as question
+from tkinter.simpledialog import askstring as prompt
+import customtkinter
+
+
+'''
+nombre:Matias
+apellido: Escalante
+---
+Ejercicio: Examen
+---
+De 20 contenedores que llegan al puerto de Rosario, se deben pedir y validar los siguientes datos
+Marca (no validar)
+Categoría (peligroso, comestible, indumentaria)
+Peso ( entre 100 y 800)
+Tipo de material ( aluminio, hierro , madera)
+Costo en $ (mayor a 0)
+Pedir datos por prompt y mostrar por print, se debe informar:
+Informe A- Cuál fue tipo de material más usado ( aluminio, hierro , madera)
+Informe B- El porcentaje de contenedores de Categoría peligroso
+Informe C- La marca y tipo del contenedor más pesado
+Informe D- La marca del contenedor de comestible con menor costo
+Informe E- El promedio de costo de todos los contenedores de HIerro
+'''
+
+
+class App(customtkinter.CTk):
+    
+    def __init__(self):
+        super().__init__()
+
+        self.title("UTN FRA")
+        
+        self.btn_validar_letra = customtkinter.CTkButton(master=self, text="Ingresar", command=self.btn_validar_letra_on_click)
+        self.btn_validar_letra.grid(row=2, pady=20, columnspan=2, sticky="nsew")
+        
+    
+    def btn_validar_letra_on_click(self):
+        contador_contenedores = True
+
+        mensaje = ""
+
+        contador_madera = 0
+        contador_hierro = 0
+        contador_aluminio = 0
+
+        contador_contenedores_peligrosos = 0
+        peso_pesado = 0
+        marca_pesada = ""
+        tipo_material_pesado = ""
+
+        costo_menor = 0
+        contador_comestible = 0
+
+        acumulador_costo_hierro = 0
+
+        while contador_contenedores < 3:
+            #Marca (no validar)
+            marca = prompt("marca", "introduzcan la marca")
+
+            #Categoría (peligroso, comestible, indumentaria)
+            categoria = prompt("categoria", "introduca la categoria")
+            while categoria != "peligroso" and categoria != "comestible" and categoria != "indumentaria":
+                categoria = prompt("error", "reintroduca la categoria")
+
+            #Peso ( entre 100 y 800)
+            peso = prompt("peso", "introduzca el peso")
+            peso = int(peso)
+            while int(peso) < 100 and int(peso) > 800:
+                peso = prompt("error", "introduzca un peso dentro del rango")
+
+            #Tipo de material ( aluminio, hierro , madera)
+            tipo_material = prompt("material", "introduzca el tipo de material")
+            while tipo_material != "aluminio" and tipo_material != "hierro" and tipo_material != "madera":
+                tipo_material = prompt("error","reintroduzca el tipo de material")
+
+            #Costo en $ (mayor a 0)
+            costo = prompt("valor", "introduzca el costo")
+            costo = int(costo)
+            while int(costo) <= 0:
+                costo = prompt("error", "reintroduzca un valor")
+
+            match tipo_material:
+                case "aluminio":
+                    contador_aluminio +=1
+                case "madera":
+                    contador_madera += 1
+                case "hierro":
+                    contador_hierro +=1
+                    acumulador_costo_hierro += costo
+
+            if categoria == "peligroso":
+                contador_contenedores_peligrosos += 1
+
+            #C- La marca y tipo del contenedor más pesado
+            if  contador_contenedores == 0 or peso_pesado < peso:
+                peso_pesado = peso
+                marca_pesada = marca
+                tipo_material_pesado = tipo_material
+
+            #D- La marca del contenedor de comestible con menor costo
+            if categoria == "comestible" and costo_menor < costo:
+                contador_comestible += 1
+                costo_menor = costo
+                marca_menor_costo = marca
+        
+            contador_contenedores += 1
+
+            #A- Cuál fue tipo de material más usado ( aluminio, hierro , madera)
+            if contador_aluminio > contador_hierro and contador_aluminio > contador_madera:
+                mensaje += "\nel más usado es aluminio"
+            elif contador_hierro > contador_madera:
+                mensaje += "\nel más usado es hierro"
+            else:
+                mensaje += "\nel más usado es madera"
+
+            #B- El porcentaje de contenedores de Categoría peligroso
+            if contador_contenedores_peligrosos > 0:
+                procentaje_peligrosos = (contador_contenedores_peligrosos * 100) / contador_contenedores
+                mensaje += f"\nel promedio de contenedores peligrosos es: {procentaje_peligrosos}"
+            else:
+                mensaje += "\nno hubieron contenedores peligrosos"
+
+            mensaje += f"\nla marca del cont. más pesado es: {marca_pesada} y su tipo es : {tipo_material_pesado}"
+
+            if contador_comestible > 0:
+                mensaje += f"\nla marca de menor costo es {marca_menor_costo}"
+            else:
+                mensaje += f"\nno ingresaron contenedores de categoria comestibles"
+
+            #E- El promedio de costo de todos los contenedores de HIerro
+            if contador_hierro > 0:
+                promedio_costo_hierro = acumulador_costo_hierro / contador_hierro
+                mensaje += f"\nel promedio del costo de los contenedores de hierro es {promedio_costo_hierro}"
+            else:
+                mensaje += f"\nno ingresaron contenedores de hierro"
+        print(mensaje)
+
+
+
+if __name__ == "__main__":
+    app = App()
+    app.geometry("300x300")
+    app.mainloop()

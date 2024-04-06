@@ -20,7 +20,8 @@ Luego calcular:
     D. Cantidad de números negativos ingresados
     E. Cantidad de ceros
     F. Diferencia entre la cantidad de los números positivos ingresados y los negativos
-
+    G. El máximo valor. 
+    H. El mínimo valor (incluyendo en que iteracion se encontro, solo la primera)
 Informar los resultados mediante alert()
 
 '''
@@ -43,6 +44,8 @@ class App(customtkinter.CTk):
         cantidad_num_positivos = 0
         cantidad_ceros = 0
         dif_positivos_negativos = 0
+        bandera_num = True
+        contador_itera = 1
         while True:
             numero = prompt("numero", "ingrese un numero")
             if numero is None:
@@ -60,11 +63,18 @@ class App(customtkinter.CTk):
             else:
                 cantidad_ceros += 1
 
-        dif_positivos_negativos = cantidad_num_positivos - cantidad_num_negativos
+            if bandera_num or (numero > maximo):
+                maximo = numero
+            if bandera_num or (numero < minimo):
+                minimo = numero
+                cantidad_num_negativos = contador_itera
+                bandera_num = False
+            contador_itera += 1
+        dif_positivos_negativos = cantidad_num_negativos - cantidad_num_positivos
         if dif_positivos_negativos < 0:
             dif_positivos_negativos *= -1
-
-        mensaje =  f"suma negativos : {suma_ac_negativos}\nsuma positivos: {suma_ac_positivos}\ncantidad números negativos: {cantidad_num_negativos}\ncantidad números positivos: {cantidad_num_positivos}\ncantidad de ceros: {cantidad_ceros}\nla diferencia es : {dif_positivos_negativos}"
+            
+        mensaje =  f"suma negativos : {suma_ac_negativos}\nsuma positivos: {suma_ac_positivos}\ncantidad números negativos: {cantidad_num_negativos}\ncantidad números positivos: {cantidad_num_positivos}\ncantidad de ceros: {cantidad_ceros}\nla diferencia es : {dif_positivos_negativos}\n el maximo es: {maximo}\n el minimo es: {minimo} en la iteración {cantidad_num_negativos}"
         
         alert("numeros", mensaje)
     

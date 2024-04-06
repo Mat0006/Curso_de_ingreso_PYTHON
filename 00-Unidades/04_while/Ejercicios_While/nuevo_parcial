@@ -1,0 +1,168 @@
+import tkinter
+from tkinter.messagebox import showinfo as alert
+from tkinter.messagebox import askyesno as question
+from tkinter.simpledialog import askstring as prompt
+import customtkinter
+
+
+'''
+nombre:
+apellido:
+---
+Ejercicio: while_05
+---
+Simulacro Turno Noche
+
+Un famoso casino de mar del plata,  requiere una app para controlar el egreso de dinero durante una jornada. Para ello se ingresa por cada ganador:
+Nombre
+Importe ganado (mayor o igual $1000)
+Género (“Femenino”, “Masculino”, “Otro”)
+Juego (Ruleta, Poker, Tragamonedas)
+Necesitamos saber:
+1. Nombre y género de la persona que más ganó.
+2. Promedio de dinero ganado en Ruleta.
+3. Porcentaje de personas que jugaron en el Tragamonedas.
+4. Cuál es el juego menos elegido por los ganadores.
+5. El nombre del jugador que ganó más dinero jugando Poker
+6. Cantidad de jugadores de género femenino que jugaron ruleta o tragamonedas y que ganaron más de $20000
+7. Promedio de importe ganado de las personas que NO jugaron Poker, siempre y cuando el importe supere los $15000
+8. Porcentaje de dinero en función de cada juego
+'''
+
+
+class App(customtkinter.CTk):
+    
+    def __init__(self):
+        super().__init__()
+
+        self.title("UTN FRA")
+        
+        self.btn_validar_letra = customtkinter.CTkButton(master=self, text="Ingresar", command=self.btn_validar_letra_on_click)
+        self.btn_validar_letra.grid(row=2, pady=20, columnspan=2, sticky="nsew")
+        
+    
+    def btn_validar_letra_on_click(self):
+        bandera = True
+        contador_ruleta = 0
+        contador_poker = 0
+        contador_tragamonedas = 0
+
+        acumulador_ruleta = 0
+        acumulador_poker = 0
+        acumulador_tragamonedas = 0
+
+        acumulador_ruleta = 0
+
+        contador_ganadores = 0
+
+        contador_femenino_ruleta_tragamonedas = 0
+
+        contador_no_poker = 0
+        while bandera:
+            #Nombre
+            nombre = prompt("nombre", "ingrese su nombre: ")
+            while nombre == None or nombre == "":
+                nombre = prompt("error", "reingrese su nombre: ")
+
+            #Importe ganado (mayor o igual $1000)
+            importe_ganado = prompt("importe", "ingrese su importe: ")
+            importe_ganado = int(importe_ganado)
+
+            while int(importe_ganado) < 1000:
+                importe_ganado = prompt("error", "reingrese su importe: ")
+                importe_ganado = int(importe_ganado)
+
+            #Género (“Femenino”, “Masculino”, “Otro”)
+            genero = prompt("genero", "ingrese su genero: ")
+            while genero != "Masculino" and genero != "Femenino" and genero != "Otro":
+                genero = prompt("error", "reingrese su genero")
+
+            #Juego (Ruleta, Poker, Tragamonedas)
+            juego = prompt("juego", "ingrese al juego: ")
+            while juego != "Ruleta" and juego != "Poker" and juego != "Tragamonedas":
+                juego = prompt("error", "reingrese el juego: ")
+
+            #Promedio de dinero ganado en Ruleta.
+            match juego:
+                case "Ruleta":
+                    contador_ruleta += 1
+                    acumulador_ruleta += importe_ganado
+                case "Poker":
+                    contador_poker +=1
+                    acumulador_poker += importe_ganado
+                #El nombre del jugador que ganó más dinero jugando Poker
+                    if contador_poker == 1 or mayor_importe_poker:
+                        mayor_importe_poker = importe_ganado
+                        nombre_ganador_poker = nombre
+                    else:
+                        nombre_ganador_poker = "nadie jugó poker"
+
+                case "Tragamonedas":
+                    contador_tragamonedas += 1
+                    acumulador_tragamonedas += importe_ganado
+
+                #Nombre y género de la persona que más ganó.
+            if contador_ganadores == 0 or mayor_importe < importe_ganado:
+                mayor_importe = importe_ganado
+                nombre_ganador = nombre
+                genero_ganador = genero
+                contador_ganadores +=1
+
+            if contador_ruleta > 0:
+                promedio_ruleta = acumulador_ruleta / contador_ruleta
+            else:
+                promedio_ruleta = "no se ingresaron datos"
+
+            #Porcentaje de personas que jugaron en el Tragamonedas.
+            if contador_tragamonedas > 0:
+                porcentaje_jugadores_tragamonedas = (contador_tragamonedas * 100) / contador_ganadores
+            else:
+                porcentaje_jugadores_tragamonedas = "no hubo jugadores"
+
+                #Cuál es el juego menos elegido por los ganadores.
+            if contador_poker < contador_ruleta and contador_poker < contador_tragamonedas:
+                menor_jugado = "Poker"
+            elif contador_ruleta < contador_tragamonedas:
+                menor_jugado = "Ruleta"
+            else:
+                menor_jugado = "Tragamonedas"
+
+            #femenino que jugaron ruleta o tragamonedas y que ganaron más de $20000
+            if genero == "Femenino" and (juego != "Poker") and importe_ganado > 20000:
+                contador_femenino_ruleta_tragamonedas += 1
+            else:
+                contador_femenino_ruleta_tragamonedas = "no hubo jugadores de este género jugando estos juegos"
+
+            #Promedio de importe ganado de las personas que NO jugaron Poker, siempre y cuando el importe supere los $15000
+                if juego != "Poker" and importe_ganado > 15000:
+                    contador_no_poker += 1
+                    acumulador_no_poker = importe_ganado
+            
+            #Porcentaje de dinero en función de cada juego
+            total_dinero_juegos = acumulador_tragamonedas + acumulador_poker + acumulador_ruleta
+            porcentaje_dinero_ruleta = (acumulador_ruleta * 100) / total_dinero_juegos
+            porcentaje_dinero_poker = (acumulador_poker * 100) / total_dinero_juegos
+            porcentaje_dinero_tragamonedas =  100 - porcentaje_dinero_poker - porcentaje_dinero_ruleta
+
+            
+            bandera = question("continuar", "¿quiere continuar?")
+
+            promedio_nopoker= acumulador_no_poker / contador_no_poker
+
+                
+            print(f"1. el nombre de quien más ganó es {nombre_ganador} y su género es {genero_ganador}")
+            print(f"2. el promedio de dinero ganado en la ruleta es {promedio_ruleta}")
+            print(f"3. el porcentaje de jugadores en tragamonedas {porcentaje_jugadores_tragamonedas}%")
+            print(f"4. el menor jugado es {menor_jugado}")
+            print(f"5. el nombre de quien más ganó en el poker es {nombre_ganador_poker}")
+            print(f"6. la cantidad de jugadores de género femenino que ganaron más de $20000 jugando a la ruleta y al tragamonedas son : {contador_femenino_ruleta_tragamonedas}")
+            if contador_no_poker > 0:
+                print(f"7. el promedio que no jugaron al poker y ganaron más de 15000 es: {promedio_nopoker}")
+
+            print(f"7.Porcentaje de dinero de cada juego \n ruleta: {porcentaje_dinero_ruleta}%\n tragamonedas: {porcentaje_dinero_tragamonedas}%\n poker: {porcentaje_dinero_poker}%")
+            
+
+if __name__ == "__main__":
+    app = App()
+    app.geometry("300x300")
+    app.mainloop()

@@ -1,0 +1,19 @@
+print("------------------------------")
+print("--------BIENVENIDO A----------")
+print("---LA TIENDA DE MANZANAS------")
+print("------------------------------")
+
+total_manzanas = 20
+precio_manzana = 5
+
+
+print("agrega tu nombre")
+input()
+
+print("y apellido") 
+input()
+
+print("¿cuantas manzanas quieres?")
+total_manzanas = total_manzanas - int(input())
+print(total_manzanas)
+input() == precio_manzana * total_manzanas

@@ -1,0 +1,169 @@
+
+import tkinter
+from tkinter.messagebox import showinfo as alert
+from tkinter.messagebox import askyesno as question
+from tkinter.simpledialog import askstring as prompt
+import customtkinter
+
+
+'''
+nombre:
+apellido:
+---
+Ejercicio: while_01
+---
+Enunciado:
+'''
+'''Se nos ha solicitado desarrollar una aplicación para llevar registro de las entradas vendidas en el Estadio River 
+Plate, para el concierto de Taylor Swift. Para ello, se solicitará al usuario la siguiente información al momento de 
+comprar cada entrada:
+
+Al presionar el voton se debera pedir la carga de los siguientes datos, hasta que el usuario lo desee:
+
+Los datos que deberas pedir para los ventas son:
+    * Nombre del comprador
+    * Edad (no menor a 16)
+    * Género (Masculino, Femenino, Otro)
+    * Tipo de entrada (General, Campo delantero, Platea)
+    * Medio de pago (Crédito, Efectivo, Débito) 
+    * Precio de la entrada (Se debe calcular)
+
+Para cada venta, se calculará el total a pagar en función del tipo de entrada elegida, 
+el medio de pago y su precio correspondiente.
+
+ * Lista de precios: 
+        * General: $16000
+        * Campo:   $25000
+        * Platea:  $30000
+
+Las entradas adquiridas con tarjeta de crédito tendrán un 20% de descuento sobre el 
+precio de la entrada, mientras que las adquiridas con tarjeta de débito un 15%. 
+
+Al finalizar la carga, el programa debera mostrar los siguientes informes:
+
+    #! 1) - Determina el género más frecuente entre las personas que compraron entradas de tipo "Campo".
+    #! 2) - Determina cuántas personas compraron entradas de tipo "General" pagando con tarjeta 
+    #!          de crédito y su edad promedio.
+    #! 3) - Calcula el porcentaje de personas que compraron entradas de tipo "Platea" y 
+    #!          pagaron con tarjeta de débito  respecto al total de personas en la lista.
+    #! 4) - Cuál es el total de descuentos en pesos que aplicó la empresa, pero solo de 
+    #!          los aplicados a tarjetas de crédito
+    #! 5) - El nombre y la edad de la persona que pagó el precio más alto por una entrada de 
+    #!          tipo "General" y pagó con tarjeta de débito (Solo la primera que se encuentre)
+    #! 6) - La cantidad de personas que compraron entradas de tipo "Platea" y cuya 
+    #!          edad es un número primo.
+    #! 7) - Calcula el monto total recaudado por la venta de entradas de tipo "Platea" y 
+    #!          pagadas con tarjeta de debito por personas cuyas edades son múltiplos de 6.
+'''
+
+
+class App(customtkinter.CTk):
+    
+    def __init__(self):
+        super().__init__()
+
+        self.title("UTN FRA")
+        
+        self.btn_mostrar_iteracion = customtkinter.CTkButton(master=self, text="Mostrar iteración", command=self.btn_mostrar_iteracion_on_click)
+        self.btn_mostrar_iteracion.grid(row=2, pady=20, columnspan=2, sticky="nsew")
+        
+    
+    def btn_mostrar_iteracion_on_click(self):
+        bandera = True
+
+        contador_masculino = 0
+        contador_femenino = 0
+        contador_otro = 0
+        contador_total_personas = 0
+
+        contador_entrada_campo_delantero = 0
+        contador_entrada_platea = 0
+        contador_entrada_general = 0
+
+        precio_entrada = 0
+        acumulador_precio_entrada = 0
+        acumulador_edad_tipo_general = 0
+        contador_tarjeta_credito = 0
+        contador_tarjeta_debito = 0
+        while bandera:
+            # Nombre del comprador
+            nombre = prompt("nombre","ingrese su nombre: ")
+            if nombre == None:
+                break
+            while not nombre.isalpha():
+                nombre = prompt("error", "reingrese su nombre: ")
+                if nombre == None:
+                    break
+            #* Edad (no menor a 16)
+            edad = prompt("edad", "ingrese su edad: ")
+            edad = int(edad)
+            while edad < 16:
+                edad = prompt("error", "reingrese su edad: ")
+                edad = int(edad)
+            #* Género (Masculino, Femenino, Otro)
+            genero = prompt("genero", "ingrese su genero: ")
+            while genero != "Masculino" and genero != "Femenino" and genero != "Otro":
+                genero = prompt("error", "reingrese su genero: ")
+            #* Tipo de entrada (General, Campo delantero, Platea)
+            tipo_entrada = prompt("entrada", "ingrese su tipo de entrada: ")
+            while tipo_entrada != "General" and tipo_entrada != "Campo delantero" and tipo_entrada != "Platea":
+                tipo_entrada = prompt("error", "reingrese su tipo de entrada: ")
+            #* Medio de pago (Crédito, Efectivo, Débito)
+            medio_pago = prompt("pago", "ingrese su medio de pago: ")
+            while medio_pago != "Efectivo" and medio_pago != "Debito" and medio_pago != "Credito":
+                medio_pago = prompt("error", "reingrese su medio de pago: ")
+            #! 1) - Determina el género más frecuente entre las personas que compraron entradas de tipo "Campo".
+            match genero:
+                case "Masculino":
+                    contador_masculino +=1
+                case "Femenino":
+                    contador_femenino += 1
+                case "Otro":
+                    contador_otro += 1
+                #! 2) - Determina cuántas personas compraron entradas de tipo "General" pagando con tarjeta 
+                #!de crédito y su edad promedio.
+            match tipo_entrada:
+                case "General":
+                    acumulador_edad_tipo_general += edad
+                    precio_entrada = 16000
+                    if medio_pago == "Credito" and medio_pago == "Debito":
+                        contador_tarjeta_credito += 1
+                        contador_entrada_general +=1
+
+                case "Campo delantero":
+                    precio_entrada = 25000
+                    contador_entrada_campo_delantero += 1
+                    contador_total_personas = contador_masculino + contador_otro + contador_femenino
+                    promedio_masculino_entrada_campo = contador_masculino / contador_total_personas
+                    promedio_femenino_entrada_campo = contador_femenino / contador_total_personas
+                    promedio_otro_entrada_campo = contador_otro / contador_total_personas
+                    if promedio_femenino_entrada_campo > promedio_masculino_entrada_campo and promedio_femenino_entrada_campo > promedio_otro_entrada_campo:
+                        promedio_mayor_entrada_campo = "Femenino"
+                    elif promedio_masculino_entrada_campo > promedio_otro_entrada_campo:
+                        promedio_mayor_entrada_campo = "Masculino"
+                    else:
+                        promedio_mayor_entrada_campo = "Otro"
+                case "Platea":
+                    precio_entrada = 30000
+                    contador_entrada_platea += 1
+                    if medio_pago == "Debito":
+                        contador_tarjeta_debito += 1
+
+            if medio_pago == "Credito":
+                precio_entrada = precio_entrada * 0.80
+            elif medio_pago == "Debito":
+                precio_entrada = precio_entrada * 0.75
+            acumulador_precio_entrada += precio_entrada
+ 
+
+
+
+            bandera = question("seguir", "quiere continuar?")
+        print(f"1. el genero más frecuente es : {promedio_mayor_entrada_campo}")
+        print(f"2. La cantidad de personas son: {contador_entrada_general} y el promedio de la edad es: {acumulador_edad_tipo_general}")
+        
+    
+if __name__ == "__main__":
+    app = App()
+    app.geometry("300x300")
+    app.mainloop()
